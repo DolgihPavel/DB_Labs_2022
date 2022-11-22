@@ -3,7 +3,6 @@
 |имя поля | тип | ограничения | описание |
 |:---:|:---:|:---:|:---:|
 | id | pk(INT) | auto increment; not null; unique | первичный ключ |
-| cart_id | fk(INT) | auto increment; not null; unique | корзина пользователя |
 | email | VARCHAR(50) | not null | почта пользователя |
 | password | VARCHAR(255) | not null | пароль пользователя |
 | role_id | fk(INT) | not null | роль |
@@ -27,22 +26,15 @@
 |имя поля | тип | ограничения | описание |
 |:---:|:---:|:---:|:---:|
 | id | pk(INT) | auto increment; not null; unique | первичный ключ |
-| books_descs_id | fk(INT) | not null | описание книги |
-| amount | INT | not null | количество оставшихся книг |
-| status | VARCHAR(100) | not null; default(in stock) | статус |
-
-
-## books_descs (Описания книг)
-|имя поля | тип | ограничения | описание |
-|:---:|:---:|:---:|:---:|
-| id | pk(INT) | auto increment; not null; unique | первичный ключ |
 | name | VARCHAR(150) | not null | название книги |
 | price | INT | not null | цена книги |
-| description | VARCHAR(1000) | not null | описание книги |
+| description | VARCHAR(500) | not null | описание книги |
 | pages | INT | not null | количество страниц |
 | year_of_publishing | INT | not null | год издания |
 | isnb | INT(13) | not null | международный стандартный книжный номер |
 | genre_id | fk(INT) | not null | категория книги |
+| amount | INT | not null | количество оставшихся книг |
+| status | VARCHAR(100) | not null; default(in stock) | статус |
 
 
 ## genres (Жанры книг)
@@ -99,9 +91,28 @@
 | id | pk(INT) | auto increment; not null; unique | первичный ключ |
 | book_id | fk(INT) | not null | книга |
 | cart_id | fk(INT) | not null | корзина |
+| added_date | date | not null | дата добавления |
+
+
+## orders (Заказы)
+|имя поля | тип | ограничения | описание |
+|:---:|:---:|:---:|:---:|
+| id | pk(INT) | auto increment; not null; unique | первичный ключ |
+| user_id | fk(INT) | not null | пользователь |
+| price | INT | not null | цена |
+| creation_date | date | not null | дата создания заказа |
+
+
+## books & orders (Книги и заказы)
+|имя поля | тип | ограничения | описание |
+|:---:|:---:|:---:|:---:|
+| id | pk(INT) | auto increment; not null; unique | первичный ключ |
+| order_id | fk(INT) | not null | заказ |
+| book_id | fk(INT) | not null | книга |
 
 
 Связи многие ко многим для которых были созданы промежуточные таблицы:
 
  1.У автора может быть много книг, у книг может быть несколько авторов  
  2.В корзине может быть несколько книг, книги могут лежать в разных корзинах
+ 3.В заказе может быть несколько книг, книги могут быть в разных заказах
