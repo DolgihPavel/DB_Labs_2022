@@ -58,3 +58,17 @@ SELECT id,name,"Amount range"=
 		ELSE 'Over 1000'  
 	END
 FROM books
+
+SELECT price,name,
+	IIF(Price>1000,'Expensive','Cheap') AS Info
+FROM books
+
+SELECT logs.message, users.email, roles.name As Role, books_carts.added_date,books.name,
+books.price, book_images.url
+FROM logs
+JOIN Users ON logs.user_id = users.id
+RIGHT JOIN Roles ON users.role = roles.id
+LEFT JOIN books_carts ON (SELECT user_id FROM carts WHERE books_carts.cart_id = carts.user_id) = users.id
+LEFT JOIN books ON books_carts.book_id = books.id
+LEFT JOIN book_images ON book_images.book_id = books.id
+WHERE roles.name LIKE 'Customer' 
