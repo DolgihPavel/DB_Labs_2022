@@ -54,6 +54,14 @@ WHERE name=@name;
 
 GO
 
+CREATE PROCEDURE DeleteReview
+@id INT
+AS
+DELETE reviews
+WHERE id=@id;
+
+GO
+
 CREATE PROCEDURE DeleteAllReviewsOnBook
 @book_name VARCHAR(150)
 AS
@@ -69,3 +77,57 @@ CREATE PROCEDURE AddOrder
 AS
 INSERT INTO orders(user_id,price,creation_date)
 VALUES(@user_id,@price,@date);
+
+GO 
+
+CREATE PROCEDURE AddGenre
+@name VARCHAR(100)
+AS
+INSERT INTO genres(name)
+VALUES(@name);
+
+GO 
+
+CREATE PROCEDURE DeleteGenre
+@name VARCHAR(100)
+AS
+DELETE genres
+WHERE name=@name
+
+GO
+
+CREATE PROCEDURE AddAuthors
+@name VARCHAR(150),
+@date DATE,
+@biography VARCHAR(500)
+AS
+INSERT INTO authors(name,date_of_birth,biography)
+VALUES(@name,@date,@biography);
+
+GO 
+
+CREATE PROCEDURE ShowAuthors AS
+BEGIN
+SELECT name,date_of_birth,biography
+FROM authors
+END;
+
+GO
+
+CREATE PROCEDURE AddUser
+@email VARCHAR(50),
+@password VARCHAR(255),
+@role VARCHAR(100)
+AS
+BEGIN
+	INSERT INTO users(email,password,role)
+	VALUES(@email,@password,(SELECT id FROM roles WHERE name=@role));
+END;
+
+GO 
+
+CREATE PROCEDURE ShowLogs AS
+BEGIN
+SELECT user_id,message
+FROM logs
+END;
